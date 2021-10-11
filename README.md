@@ -111,7 +111,8 @@ ansible-playbook update.yml -e "version=x.x.xx"
 ```
 One challenge I've not been able to overcome with automating the process is this:  
 When manually updating the controller a splash screen asks if the controller has a backup.  
-The default answer is yes, so manually pressing 'enter' starts the installation of the new controller.  
+The default answer is yes, so manually pressing 'enter' starts the installation of the new controller.
+![update_unifi_quesiton](files/unifi_backup_question.png)  
 This occurs about 10 seconds after the start of the "Install UniFi" task.  
 The current workaround is to press 'enter' about 10 or 15 seconds after the appearance of "Install UniFi" in the ansible display.  
 One day I hope to find a fix for this...  
