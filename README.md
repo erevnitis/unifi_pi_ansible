@@ -84,7 +84,7 @@ git clone https://github.com/erevnitis/unifi_pi_ansible.git
 ```
 ## Change Directory to 'ansible_unifi_pi:
 ```bash
-cd ansible_unifi_pi
+cd unifi_pi_ansible
 ```
 ## Run the playbook
 ```bash
