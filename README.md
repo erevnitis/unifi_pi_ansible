@@ -80,7 +80,7 @@ ssh ansible@192.168.1.11
 ```
 Now grab the repository
 ```bash
-git clone https://github.com/erevnitis/ansible_unifi_pi.git
+git clone https://github.com/erevnitis/unifi_pi_ansible.git
 ```
 ## Change Directory to 'ansible_unifi_pi:
 ```bash
