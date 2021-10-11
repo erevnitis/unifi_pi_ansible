@@ -1,12 +1,12 @@
 ---
-- hosts: unifi_pi
+- hosts: localhost
   become: true
   vars_files:
     - vars/main.yml
 
   tasks:
     - name: Remove old UniFi package
-      import_tasks: remove_unifi.yml
+      import_tasks: tasks/remove_unifi.yml
     - name: Install Unifi Controller
-      import_tasks: update_unifi_controller.yml
+      import_tasks: tasks/update_unifi_controller.yml
 ...
