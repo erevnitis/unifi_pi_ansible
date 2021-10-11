@@ -1,0 +1,14 @@
+---
+
+- name: Create unifi directory 
+  file:
+    state: directory
+    path: /usr/lib/unifi
+    owner: "{{ default_user }}"
+    group: "{{ default_group }}"
+    mode: '0755'
+
+- name: Download UniFi Controller and Install
+  apt:
+    deb: "{{ old_controller_url }}"
+...

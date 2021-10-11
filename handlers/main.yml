@@ -1,0 +1,7 @@
+---
+
+- name: unifi_service_restart
+  service:
+    name: unifi
+    state: restarted
+...

@@ -1,0 +1,12 @@
+---
+- hosts: unifi_pi
+  become: true
+  vars_files:
+    - vars/main.yml
+
+  tasks:
+    - name: Install Dependencies
+      import_tasks: install_dependencies.yml
+    - name: Install Unifi Controller
+      import_tasks: install_unifi_controller.yml
+...

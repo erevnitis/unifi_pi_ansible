@@ -1,0 +1,12 @@
+---
+
+- name: Install OpenJDK, haveged, xz-utils
+  apt:
+    name: 
+      - openjdk-8-jre-headless
+      - haveged
+      - xz-utils
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+...

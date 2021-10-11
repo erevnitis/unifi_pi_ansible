@@ -1,0 +1,8 @@
+---
+
+- name: Remove UniFi Controller package
+  apt:
+    name: 'unifi_sysvinit_all.deb'
+    state: absent
+    autoclean: yes
+...
