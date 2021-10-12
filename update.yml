@@ -7,6 +7,12 @@
   tasks:
     - name: Remove old UniFi package
       import_tasks: tasks/remove_unifi.yml
-    - name: Install Unifi Controller
+    - name: Update Unifi Controller
       import_tasks: tasks/update_unifi_controller.yml
+  
+  handlers:
+  - name: unifi_service_restart
+    service:
+      name: unifi
+      state: restarted 
 ...
