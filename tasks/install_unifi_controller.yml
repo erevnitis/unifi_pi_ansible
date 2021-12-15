@@ -10,5 +10,5 @@
 
 - name: Download UniFi Controller and Install
   apt:
-    deb: "{{ old_controller_url }}"
+    deb: "{{ controller_url }}"
 ...

@@ -6,6 +6,9 @@
       - openjdk-8-jre-headless
       - haveged
       - xz-utils
+      - jsvc
+      - libcommons-daemon-java
+      - mongodb-server mongodb-clients
     state: latest
     update_cache: yes
     cache_valid_time: 3600

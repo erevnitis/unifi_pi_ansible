@@ -3,7 +3,7 @@
 purple='\033[1;35m'
 nocolor='\033[0m'
 green='\033[1;32m'
-device_name="unifi_pi"
+device_name="unifipi"
 username="ansible"
 groupname="wheel"
 ssh_dir="/home/$username/.ssh"
@@ -31,7 +31,7 @@ sudo groupadd $groupname
 echo -e "${green}\n\n.....Added the group $groupname....\n\n${nocolor}"
 
 echo -e "${purple}\n\nAdd user\n\n${nocolor}"
-useradd -m -p $pass $username
+useradd -m -p $pass $username -g $groupname -G adm,sudo
 echo -e "${green}\n\n.....Added the user $username....\n\n${nocolor}"
 
 echo -e "${purple}Add sudo permissions for $username\n\n${nocolor}"
