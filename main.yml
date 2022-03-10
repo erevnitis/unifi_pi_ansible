@@ -1,8 +1,7 @@
 ---
-- hosts: localhost
+- hosts: unifi_pi
   become: true
-  vars_files:
-    - vars/main.yml
+  vars_files: vars/main.yml
 
   tasks:
     - name: Install Dependencies

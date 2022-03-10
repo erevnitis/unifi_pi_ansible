@@ -4,7 +4,7 @@
   ansible.builtin.shell:
     cmd: "{{ get_version }}"
 
-- name: Install UniFi
+- name: Install UniFi (Press "Enter" ten seconds after you see this...)
   ansible.builtin.shell: "{{ update_unifi }}"
   notify: unifi_service_restart
 ...

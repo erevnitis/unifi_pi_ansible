@@ -1,14 +1,16 @@
 ---
 
-- name: Create unifi directory 
-  file:
-    state: directory
-    path: /usr/lib/unifi
-    owner: "{{ default_user }}"
-    group: "{{ default_group }}"
-    mode: '0755'
+- name: Download Controller Package
+  ansible.builtin.command:
+    cmd: wget "{{ controller_url }}"
 
-- name: Download UniFi Controller and Install
-  apt:
-    deb: "{{ controller_url }}"
+- name: Install UniFi and it's Dependencies
+  ansible.builtin.shell: "{{ install_unifi }}"
+
+- name: Enable UniFi
+  systemd:
+    name: unifi
+    state: started
+    enabled: true
+    daemon_reload: yes
 ...

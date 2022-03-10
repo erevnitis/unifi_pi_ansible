@@ -2,7 +2,7 @@
 
 all:
   hosts:
-    unifipi:
-      ansible_host: localhost
+    unifi_pi:
+      ansible_host: ***Insert_IP_Here***
       ansible_user: "{{ default_user }}"
 ...

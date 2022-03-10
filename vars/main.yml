@@ -3,12 +3,12 @@
 ansible_default: true
 default_user: "ansible"
 default_group: "wheel"
-default_password: "hktelemacher"
+default_password: "Insert_Password_Here"
 device_name: "unifipi"
-controller_url: "https://dl.ui.com/unifi/6.5.54/unifi_sysvinit_all.deb"
-old_controller_url: "https://dl.ui.com/unifi/6.4.54/unifi_sysvinit_all.deb"
+controller_url: "https://dl.ui.com/unifi/7.0.23/unifi_sysvinit_all.deb"
+old_controller_url: "https://dl.ui.com/unifi/6.5.55/unifi_sysvinit_all.deb"
 install_unifi: "sudo dpkg -i unifi_sysvinit_all.deb; sudo apt install -f -y"
 update_unifi: "sudo dpkg -i unifi_{{ version }}_sysvinit_all.deb; sleep 15; echo ''"
 get_version: "wget https://dl.ui.com/unifi/{{ version }}/unifi_sysvinit_all.deb -O unifi_{{ version }}_sysvinit_all.deb"
-ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB98K+gxhKyalil0V0m1KUZk+cwCZx/mV4vN9xdChIDE unifipi"
+ssh_key: "Insert_SSH_Key_Here"
 ...

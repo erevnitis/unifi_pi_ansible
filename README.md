@@ -3,32 +3,79 @@ Use Ansible to Install UniFi Controller on Raspberry Pi4
 
 ## Setup
 The following steps can be categorized into two parts:
-- Provision a Raspberry Pi4 to accept the repository and Ansible playbook
+- Provision a Raspberry Pi4 to accept the Ansible playbook
 - Install UniFi Network application on the Pi4  
+
 There is also a playbook to update UifFi Network software  
 I modeled the ansible playbook from this excellent guide:
+
 [Step-By-Step Tutorial Raspberry Pi with Unifi Controller](https://community.ui.com/questions/Step-By-Step-Tutorial-Guide-Raspberry-Pi-with-UniFi-Controller-and-Pi-hole-from-scratch-headless/e8a24143-bfb8-4a61-973d-0b55320101dc)
 
-## Download Raspberry Pi OS Lite
-Flash SD card, I use Balena Etcher  
+## Download Ubuntu Server for Raspberry Pi
+
+Navigate to:
+
+https://ubuntu.com/download/raspberry-pi
+
+And download the Ubuntu Server 20.04 image for the Pi
+- FYI this also works if you use Ubunutu or Raspbian(with small changes)
+
+
+![Ubuntu Server](/files/download_ubuntu_server_pi.png)
+
+To flash SD card, I use Balena Etcher  
+
 ![Balena Etcher](/files/balena_unifi_pi.png)  
 
-Add blank file called 'ssh' to Boot partition
+
+After the SD card is flashed, add blank file called 'ssh' to Boot partition
+
 ```bash
 fred@pop-os:/media/fred/boot$ touch ssh
 ```
+
 Install SD card in Pi, connect network cable and power
+
 ## Grab IP address
-Using your favorite application, find the IP- I use pfSense so for me it's under the DHCP leases tab
-There you will find a device named 'raspberrypi'.  Make note of the IP address  
+Using your favorite application, find the IP address of the new Pi--I use pfSense so for me it's under the DHCP leases tab
+
+There you will find a device named 'ubuntu'.  Make note of the IP address
+
 For the purpose of this example, our IP was found to be 192.168.1.11
 
 ## SSH into the device
-I have a lot of entries in my .ssh/known-hosts file so I need to add -o IdentitiesOnly=yes
+
 ```bash
-ssh pi@192.168.1.11 -o IdentiesOnly=yes
+ssh ubuntu@192.168.1.11
 ```
-When prompted for a password the default is 'raspberry'
+When prompted for a password the default is 'ubuntu'
+
+You will be required to change the password
+
+Log in again using the new password and update the OS
+
+```bash
+sudo apt update
+```
+
+It will most likely take a while for the upgrade process to proceed as Ubuntu ships with "Unattended Upgrades" enabled.  Unattended Upgrades is a process where Ubuntu will automatically apply security patches.  It starts this process very soon after the system is online.  We have to wait for it to complete for us to be able to update our system.  If we try to do the "sudo apt dist-upgrade" too early we are met with:
+
+![could not get lock](files/could_not_get_lock.png)
+
+Or something like this.  
+
+It has been my experience that when checking for updates:
+
+```bash
+sudo apt update
+```
+
+We can finally update the OS when the number of packages needing updating is less than 54 or so.  
+
+
+```bash
+sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt autoclean -y
+```
 
 ## Update Pi and change some parameters
 For this step I copy and paste the bootstrap.sh file  
@@ -49,54 +96,70 @@ Then run the script
 ./bootstrap.sh
 ```
 At the end of the script, the device is rebooted to apply the changes
+
+
+## Install Unifi with Ansible Locally
+
+My preferred method of installing playbooks is from a local repository to the devices. It is possible to clone the repository to the device we want to configure but it involves a handful of steps:
+- install git
+- install Ansible
+- install python packages pip and python-dev
+
+on the device we're configuring. We're not going to do that here.
+
+
 ## Reconnect to the Pi
 This time connect as the new user 'ansible'
 ```bash
 ssh ansible@192.168.1.11
 ```
-## Prepare the Pi for accepting our ansible playbook
-Copy and paste another file to install git, ansible dependencies and ansible  
-After this we won't need to copy and paste anymore
-Because of the previous script, we do not need to run this script as root
-```bash
-sudo nano prepare_pi.sh
-```
-Copy the [prepare_pi.sh](files/prepare_pi.sh) and paste it  
-
-Make it executable:
-```bash
-sudo chmod +x prepare_pi.sh
-``` 
-Run the script
-```bash
-./prepare_pi.sh
-```
 
 ## Clone the Repository
-The device is rebooted again and is ready to receive our playbook  
-Connect again via ssh
+
 ```bash
-ssh ansible@192.168.1.11
+git clone git@github.com:erevnitis/unifi_pi_ansible.git
 ```
-Now grab the repository
-```bash
-git clone https://github.com/erevnitis/unifi_pi_ansible.git
-```
-## Change Directory to 'ansible_unifi_pi:
+
+### Configure Variables
+
+Navigate to the unifi_pi_ansible directory:
+
 ```bash
 cd unifi_pi_ansible
 ```
-## Run the playbook
+
+Add you're own:
+- default_password in vars/main.yml and bootstrap.sh
+- ssh_key in vars/main.yml and bootstrap.sh
+- ansible_host in inventory.yml
+
+Save your changes.
+
+### Run the playbook
+
+In the unifi_pi_ansible directory:
+
 ```bash
-ansible-playbook main.yml
+ansible-playbook main.yml 
 ```
-## Check the status of unifi.service
+
+...and we should be good.
+
+Test this by:
+
 ```bash
 systemctl status unifi.service
 ```
+
+We should see:
+
+![Unifi Status](files/unifi_status.png)
+
 Should display that the service is running.  
-Now you're ready to connect to your device at:  
-192.168.1.11:8443  
+Now you're ready to connect to your device at: 
+
+https://192.168.1.11:8443  
+
 And configure UniFi Network...
 
 

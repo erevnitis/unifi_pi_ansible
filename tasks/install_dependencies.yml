@@ -1,13 +1,33 @@
 ---
 
-- name: Install OpenJDK, haveged, xz-utils
+- name: Create unifi directory 
+  file:
+    state: directory
+    path: /usr/lib/unifi
+    owner: "{{ default_user }}"
+    group: "{{ default_group }}"
+    mode: '0755'
+
+- name: Check if MongoDB Package is present # Idempotent hack
+  stat:
+    path: "/etc/apt/sources.list.d/mongodb-org-4.4.list"
+  register: mongo 
+
+- name: Install the MongoDB 4.4 GPG key
+  ansible.builtin.shell: wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+  when: not mongo.stat.exists
+
+- name: Add MongoDB to APT sources
+  ansible.builtin.shell: echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+  when: not mongo.stat.exists
+  
+- name: Install OpenJDK, jsvc, libcommons-daemon-java, haveged, mongodb 
   apt:
     name: 
       - openjdk-8-jre-headless
-      - haveged
-      - xz-utils
       - jsvc
       - libcommons-daemon-java
+      - haveged
       - mongodb-server 
       - mongodb-clients
     state: latest
